@@ -1,0 +1,112 @@
+{% extends "jobs/jobs_base.html" %}
+
+{% block title %}Post Job | EliteLance{% endblock %}
+
+{% block content %}
+
+<div class="flex justify-center items-center min-h-screen px-6">
+
+    <div class="w-full max-w-2xl bg-black/40 backdrop-blur-lg p-10 rounded-2xl border border-white/10">
+
+        <h2 class="text-3xl font-bold mb-8 text-center">
+            Post a New Job
+        </h2>
+
+        <form method="POST" class="space-y-6">
+            {% csrf_token %}
+
+            {% if form.errors %}
+            <div class="bg-red-500/20 border border-red-500 text-red-300 p-4 rounded-lg">
+                {{ form.errors }}
+            </div>
+            {% endif %}
+
+            <!-- Title -->
+            <div>
+                <label class="block mb-2 text-sm opacity-80">Title</label>
+                {{ form.title }}
+            </div>
+
+            <!-- Description + AI -->
+            <div>
+
+                <button type="button" onclick="generateDescription()"
+                    class="mb-3 bg-indigo-600 px-4 py-2 rounded-xl text-sm font-semibold hover:bg-indigo-500 transition">
+                    ✨ Generate with AI
+                </button>
+
+                <label class="block mb-2 text-sm opacity-80">Description</label>
+                {{ form.description }}
+
+            </div>
+
+            <!-- Budget -->
+            <div>
+                <label class="block mb-2 text-sm opacity-80">Budget</label>
+                {{ form.budget }}
+            </div>
+
+            <!-- Category -->
+            <div>
+                <label class="block mb-2 text-sm opacity-80">Category</label>
+                {{ form.category }}
+            </div>
+
+            <!-- Deadline -->
+            <div>
+                <label class="block mb-2 text-sm opacity-80">Deadline</label>
+                {{ form.deadline }}
+            </div>
+
+            <!-- Submit -->
+            <button type="submit"
+                class="w-full bg-gradient-to-r from-purple-500 to-pink-500 py-3 rounded-xl font-semibold">
+                Post Job
+            </button>
+
+        </form>
+
+    </div>
+
+</div>
+
+{% endblock %}
+
+{% block extra_js %}
+
+<script>
+
+    function getCSRFToken() {
+        return document.querySelector('[name=csrfmiddlewaretoken]').value;
+    }
+
+    function generateDescription() {
+
+        const title = document.querySelector('input[name="title"]').value;
+
+        if (!title) {
+            alert("Enter job title first");
+            return;
+        }
+
+        fetch("/jobs/ai/generate-job-description/", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "X-CSRFToken": getCSRFToken()
+            },
+            body: JSON.stringify({ title: title })
+        })
+            .then(res => res.json())
+            .then(data => {
+                document.querySelector('textarea[name="description"]').value = data.description;
+            })
+            .catch(() => {
+                alert("AI failed, try again");
+            });
+
+    }
+
+</script>
+
+{% endblock %}

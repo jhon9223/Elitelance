@@ -1,0 +1,187 @@
+{% extends "jobs/jobs_base.html" %}
+
+{% block title %}Jobs{% endblock %}
+
+{% block content %}
+
+<div class="max-w-6xl mx-auto px-6 mt-10">
+
+    <h1 class="text-2xl font-bold mb-6">Available Jobs</h1>
+
+    <!-- 🔍 SEARCH + FILTER + SORT -->
+    <form method="GET" class="flex flex-wrap gap-4 mb-8 items-center 
+             bg-white/5 backdrop-blur-xl border border-white/10 
+             p-4 rounded-2xl shadow-lg">
+
+        <!-- 🔍 Search -->
+        <input type="text" name="search" value="{{ search_query }}" placeholder="Search jobs..." class="px-4 py-2 rounded-xl bg-white/5 border border-white/20 
+                  text-white placeholder-white/50 
+                  focus:outline-none focus:ring-2 focus:ring-indigo-500 
+                  focus:scale-[1.02] transition-all duration-200">
+
+        <!-- 📊 Status -->
+        <div class="relative">
+
+            <select name="status" class="px-4 py-2 pr-10 rounded-xl bg-white/10 backdrop-blur-lg 
+               border border-white/20 text-white 
+               focus:outline-none focus:ring-2 focus:ring-indigo-500 
+               appearance-none cursor-pointer transition">
+
+                <option value="">All Status</option>
+                <option value="open" {% if is_open %}selected{% endif %}>Open</option>
+                <option value="in_progress" {% if is_in_progress %}selected{% endif %}>In Progress</option>
+                <option value="completed" {% if is_completed %}selected{% endif %}>Completed</option>
+
+            </select>
+
+            <!-- Custom Arrow -->
+            <div class="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none text-white/60">
+                ▼
+            </div>
+
+        </div>
+
+        <!-- 🔃 Sort -->
+        <div class="relative">
+
+            <select name="sort" class="px-4 py-2 pr-10 rounded-xl bg-white/10 backdrop-blur-lg 
+               border border-white/20 text-white 
+               focus:outline-none focus:ring-2 focus:ring-indigo-500 
+               appearance-none cursor-pointer transition">
+
+                <option value="">Newest</option>
+                <option value="budget" {% if is_budget %}selected{% endif %}>Budget</option>
+                <option value="deadline" {% if is_deadline %}selected{% endif %}>Deadline</option>
+
+            </select>
+
+            <!-- Custom Arrow -->
+            <div class="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none text-white/60">
+                ▼
+            </div>
+
+        </div>
+
+        <!-- 🔘 Button -->
+        <button type="submit" class="bg-indigo-600 hover:bg-indigo-500 px-5 py-2 rounded-xl font-semibold 
+                   shadow-lg shadow-indigo-500/30 
+                   active:scale-95 transition-all duration-200">
+            Apply
+        </button>
+
+    </form>
+
+    <!-- 📋 JOB LIST -->
+    {% if page_obj %}
+
+    <div class="grid md:grid-cols-2 gap-6">
+
+        {% for job in page_obj %}
+
+        <div class="bg-white/5 backdrop-blur-2xl border border-white/10 
+        rounded-2xl p-6 shadow-xl 
+       hover:shadow-2xl hover:border-white/20 
+       hover:-translate-y-2 hover:scale-[1.02]
+       transition-all duration-300 ease-out">
+
+            <!-- Title -->
+            <h2 class="text-xl font-semibold mb-2">
+                {{ job.title }}
+            </h2>
+
+            <!-- Description -->
+            <p class="text-sm text-white/70 mb-3">
+                {{ job.description|truncatewords:20 }}
+            </p>
+
+            <!-- Budget -->
+            <p class="text-sm mb-2 text-indigo-300 font-medium">
+                ₹ {{ job.budget }}
+            </p>
+
+            <!-- User -->
+            <p class="text-xs text-white/50 mb-4">
+                {{ job.created_by.username }}
+            </p>
+
+            <!-- Actions -->
+            <div class="flex gap-3">
+
+                <!-- View -->
+                <a href="{% url 'job_detail' job.pk %}"
+                    class="px-4 py-2 rounded-full bg-white/10 hover:bg-white/20 text-sm transition">
+                    View
+                </a>
+
+                <!-- Freelancer -->
+                {% if user.is_authenticated and user.role == "freelancer" %}
+                <a href="{% url 'submit_proposal' job.pk %}" class="px-4 py-2 rounded-full bg-indigo-600 hover:bg-indigo-500 
+              text-sm shadow-md shadow-indigo-500/30 transition">
+                    Apply
+                </a>
+                {% endif %}
+
+                <!-- Client delete -->
+                {% if user.role == "client" and job.created_by == user %}
+                <form method="POST" action="{% url 'job_delete' job.pk %}">
+                    {% csrf_token %}
+                    <button type="submit" class="px-4 py-2 rounded-full bg-red-500/80 hover:bg-red-500 
+                   text-sm transition active:scale-95">
+                        Delete
+                    </button>
+                </form>
+                {% endif %}
+
+            </div>
+
+        </div>
+
+        {% endfor %}
+
+    </div>
+
+    <!-- 🔥 PAGINATION -->
+    <div class="flex justify-center mt-10 gap-4 items-center">
+
+        {% if page_obj.has_previous %}
+        <a href="?page={{ page_obj.previous_page_number }}&search={{ search_query }}&status={{ status_filter }}&sort={{ sort_by }}"
+            class="px-4 py-2 bg-white/10 rounded-full hover:bg-white/20">
+            ← Prev
+        </a>
+        {% endif %}
+
+        <span class="px-4 py-2">
+            Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}
+        </span>
+
+        {% if page_obj.has_next %}
+        <a href="?page={{ page_obj.next_page_number }}&search={{ search_query }}&status={{ status_filter }}&sort={{ sort_by }}"
+            class="px-4 py-2 bg-white/10 rounded-full hover:bg-white/20">
+            Next →
+        </a>
+        {% endif %}
+
+    </div>
+
+    {% else %}
+
+    <!-- EMPTY STATE -->
+    <div class="text-center mt-16">
+
+        <p class="text-lg opacity-70 mb-4">
+            No jobs available right now.
+        </p>
+
+        {% if user.is_authenticated and user.role == "client" %}
+        <a href="{% url 'job_create' %}" class="bg-teal-600 px-6 py-2 rounded-full font-semibold">
+            Post First Job
+        </a>
+        {% endif %}
+
+    </div>
+
+    {% endif %}
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,141 @@
+{% extends "jobs/jobs_base.html" %}
+
+{% block title %}Manager Dashboard{% endblock %}
+
+{% block content %}
+
+<div class="max-w-7xl mx-auto px-6 mt-10 animate-fadeIn">
+
+    <!-- HEADER -->
+    <div class="flex justify-between items-center mb-8">
+
+        <h1 class="text-3xl font-bold">Manager Dashboard</h1>
+
+        <div class="flex gap-3">
+            <a href="{% url 'job_list' %}"
+                class="px-4 py-2 bg-indigo-600 hover:bg-indigo-500 rounded-full text-sm shadow-lg shadow-indigo-500/30 transition">
+                View Jobs
+            </a>
+
+            <a href="{% url 'explore_freelancers' %}"
+                class="px-4 py-2 bg-white/10 hover:bg-white/20 rounded-full text-sm transition">
+                View Freelancers
+            </a>
+        </div>
+
+    </div>
+
+    <!-- STATS -->
+    <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
+
+        <div class="bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl p-6 shadow-lg">
+            <p class="text-sm opacity-70">Total Users</p>
+            <h2 class="text-2xl font-bold mt-2">{{ total_users }}</h2>
+        </div>
+
+        <div class="bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl p-6 shadow-lg">
+            <p class="text-sm opacity-70">Total Jobs</p>
+            <h2 class="text-2xl font-bold mt-2">{{ total_jobs }}</h2>
+        </div>
+
+        <div class="bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl p-6 shadow-lg">
+            <p class="text-sm opacity-70">Total Proposals</p>
+            <h2 class="text-2xl font-bold mt-2">{{ total_proposals }}</h2>
+        </div>
+
+        <div class="bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl p-6 shadow-lg">
+            <p class="text-sm opacity-70">Total Contracts</p>
+            <h2 class="text-2xl font-bold mt-2">{{ total_contracts }}</h2>
+        </div>
+
+    </div>
+
+    <!-- JOB STATUS -->
+    <div class="grid md:grid-cols-3 gap-6 mb-10">
+
+        <div class="bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl p-6">
+            <p class="text-sm opacity-70">Open Jobs</p>
+            <h2 class="text-2xl font-bold mt-2 text-green-400">
+                {{ open_jobs|default:0 }}
+            </h2>
+        </div>
+
+        <div class="bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl p-6">
+            <p class="text-sm opacity-70">In Progress</p>
+            <h2 class="text-2xl font-bold mt-2 text-yellow-400">
+                {{ in_progress_jobs|default:0 }}
+            </h2>
+        </div>
+
+        <div class="bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl p-6">
+            <p class="text-sm opacity-70">Completed</p>
+            <h2 class="text-2xl font-bold mt-2 text-purple-400">
+                {{ completed_jobs|default:0 }}
+            </h2>
+        </div>
+
+    </div>
+
+    <!-- RECENT JOBS -->
+    <h2 class="text-xl font-semibold mb-4">Recent Jobs</h2>
+
+    <div class="space-y-4 mb-10">
+
+        {% for job in recent_jobs %}
+        <div class="bg-white/5 backdrop-blur-xl border border-white/10 
+                    rounded-xl p-4 flex justify-between items-center">
+
+            <span>{{ job.title }}</span>
+
+            <span class="text-xs px-3 py-1 rounded-full
+                {% if job.status == 'open' %}
+                    bg-green-500/20 text-green-300
+                {% elif job.status == 'in_progress' %}
+                    bg-yellow-500/20 text-yellow-300
+                {% else %}
+                    bg-purple-500/20 text-purple-300
+                {% endif %}
+            ">
+                {{ job.status|title }}
+            </span>
+
+        </div>
+        {% empty %}
+        <p class="opacity-70">No recent jobs.</p>
+        {% endfor %}
+
+    </div>
+
+    <!-- RECENT CONTRACTS -->
+    <h2 class="text-xl font-semibold mb-4">Recent Contracts</h2>
+
+    <div class="space-y-4">
+
+        {% for contract in recent_contracts %}
+        <div class="bg-white/5 backdrop-blur-xl border border-white/10 
+                    rounded-xl p-4 flex justify-between items-center">
+
+            <span>{{ contract.job.title }}</span>
+
+            <span class="text-xs px-3 py-1 rounded-full
+                {% if contract.status == 'active' %}
+                    bg-indigo-500/20 text-indigo-300
+                {% else %}
+                    bg-green-500/20 text-green-300
+                {% endif %}
+            ">
+                {{ contract.status|title }}
+            </span>
+
+        </div>
+        {% empty %}
+        <p class="opacity-70">No recent contracts.</p>
+        {% endfor %}
+
+    </div>
+
+    <div class="h-10"></div>
+
+</div>
+
+{% endblock %}

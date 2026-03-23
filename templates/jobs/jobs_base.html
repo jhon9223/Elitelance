@@ -1,0 +1,174 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en" class="dark">
+
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}EliteLance{% endblock %}</title>
+
+    <!-- Tailwind CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = { darkMode: 'class' }
+    </script>
+    <style>
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .animate-fadeIn {
+            animation: fadeIn 0.6s ease-out;
+        }
+
+        select option {
+            color: black;
+        }
+    </style>
+
+</head>
+
+<body class="relative min-h-screen text-white overflow-x-hidden">
+    <!-- 🔥 AURORA BACKGROUND (PREMIUM) -->
+    <div class="fixed inset-0 -z-10 overflow-hidden">
+
+        <!-- Base -->
+        <div class="absolute inset-0 bg-[#0b0f1a]"></div>
+
+        <!-- Aurora gradients -->
+        <div class="absolute inset-0 opacity-40 blur-3xl">
+            <div
+                class="absolute top-[-20%] left-[10%] w-[600px] h-[600px] bg-indigo-500 rounded-full mix-blend-overlay">
+            </div>
+            <div
+                class="absolute top-[20%] right-[10%] w-[500px] h-[500px] bg-purple-500 rounded-full mix-blend-overlay">
+            </div>
+            <div
+                class="absolute bottom-[-20%] left-[30%] w-[600px] h-[600px] bg-pink-500 rounded-full mix-blend-overlay">
+            </div>
+        </div>
+
+        <!-- Smooth gradient overlay -->
+        <div class="absolute inset-0 bg-gradient-to-br from-transparent via-black/40 to-black/80"></div>
+
+        <!-- Subtle noise texture (🔥 premium feel) -->
+        <div class="absolute inset-0 opacity-[0.08] bg-[url('https://grainy-gradients.vercel.app/noise.svg')]"></div>
+
+    </div>
+    <!-- NAVBAR -->
+    <nav class="px-8 py-6 flex justify-between items-center">
+
+        <!-- Logo -->
+        <a href="{% url 'job_list' %}" class="text-2xl font-bold tracking-wide">
+            EliteLance
+        </a>
+
+        <!-- Center Links -->
+        <div class="hidden md:flex gap-8 text-sm font-medium opacity-80">
+
+            <a href="{% url 'job_list' %}" class="hover:opacity-100">
+                Jobs
+            </a>
+
+            {% if user.is_authenticated %}
+            <a href="{% url 'dashboard_home' %}" class="hover:opacity-100">
+                Dashboard
+            </a>
+            {% endif %}
+
+            <!-- 🔥 Explore Links -->
+            {% if user.is_authenticated and user.role == "freelancer" %}
+            <a href="{% url 'explore_clients' %}" class="hover:opacity-100">
+                Explore Clients
+            </a>
+            {% endif %}
+
+            {% if user.is_authenticated and user.role == "client" %}
+            <a href="{% url 'explore_freelancers' %}" class="hover:opacity-100">
+                Explore Freelancers
+            </a>
+            {% endif %}
+
+        </div>
+
+        <!-- Right Side -->
+        <div class="flex items-center gap-4 text-sm">
+
+            {% if user.is_authenticated %}
+
+            <!-- Avatar + Username -->
+            <a href="{% url 'profile' %}" class="flex items-center gap-2 hover:opacity-100">
+
+                {% if user.profile_picture %}
+                <img src="{{ user.profile_picture.url }}"
+                    class="w-10 h-10 rounded-full object-cover border border-white/20">
+                {% else %}
+                <div class="w-10 h-10 rounded-full bg-indigo-500 flex items-center justify-center text-white font-bold">
+                    {{ user.username|first|upper }}
+                </div>
+                {% endif %}
+
+                <span class="opacity-80">
+                    {{ user.username }}
+                </span>
+
+            </a>
+            <a href="{% url 'inbox' %}"
+                class="flex items-center gap-2 bg-indigo-600 hover:bg-indigo-500 px-5 py-2 rounded-full font-semibold transition">
+                💬 Messages
+            </a>
+
+            {% if user.role == "client" %}
+            <a href="{% url 'job_create' %}" class="bg-teal-600 px-4 py-2 rounded-full font-semibold">
+                Post Job
+            </a>
+            {% endif %}
+
+            <a href="{% url 'logout' %}" class="bg-white text-black px-4 py-2 rounded-full font-semibold">
+                Logout
+            </a>
+
+            {% else %}
+
+            <a href="{% url 'login' %}" class="opacity-80 hover:opacity-100">
+                Login
+            </a>
+
+            <a href="{% url 'register' %}" class="bg-white text-black px-4 py-2 rounded-full font-semibold">
+                Register
+            </a>
+
+            {% endif %}
+
+        </div>
+
+    </nav>
+
+    <!-- PAGE CONTENT -->
+    <main class="pb-16 animate-fadeIn">
+        {% if messages %}
+        <div class="max-w-4xl mx-auto mt-4 space-y-2">
+            {% for message in messages %}
+            <div class="bg-green-500/20 border border-green-400 text-green-200 px-4 py-2 rounded">
+                {{ message }}
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+        {% block content %}
+        {% endblock %}
+        {% block extra_js %}
+        {% endblock %}
+    </main>
+
+</body>
+
+</html>

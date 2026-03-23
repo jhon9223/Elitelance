@@ -1,0 +1,89 @@
+{% extends "base.html" %}
+
+{% block title %}Edit Profile{% endblock %}
+
+{% block content %}
+
+<div class="max-w-3xl mx-auto mt-10 px-6">
+
+    <div class="bg-black/40 backdrop-blur-lg rounded-2xl p-8 border border-white/10">
+
+        <h2 class="text-2xl font-bold mb-6">Edit Profile</h2>
+
+        <form method="POST" enctype="multipart/form-data" class="space-y-6">
+            {% csrf_token %}
+
+            <!-- Profile Image -->
+            <div>
+                <label class="block mb-2 text-sm">Profile Picture</label>
+                <input type="file" name="profile_picture"
+                    class="w-full bg-gray-900 border border-gray-700 rounded-xl p-3">
+            </div>
+
+            <!-- CLIENT FIELDS -->
+            {% if user.role == 'client' %}
+
+            <div>
+                <label class="block mb-2 text-sm">Company Name</label>
+                <input type="text" name="company_name" value="{{ profile.company_name }}"
+                    class="w-full px-4 py-3 rounded-xl bg-gray-900 border border-gray-700">
+            </div>
+
+            <div>
+                <label class="block mb-2 text-sm">Company Description</label>
+                <textarea name="company_description"
+                    class="w-full px-4 py-3 rounded-xl bg-gray-900 border border-gray-700">{{ profile.company_description }}</textarea>
+            </div>
+
+            {% endif %}
+
+            <!-- FREELANCER FIELDS -->
+            {% if user.role == 'freelancer' %}
+
+            <div>
+                <label class="block mb-2 text-sm">Skills</label>
+                <input type="text" name="skills" value="{{ profile.skills }}"
+                    class="w-full px-4 py-3 rounded-xl bg-gray-900 border border-gray-700">
+            </div>
+
+            <div>
+                <label class="block mb-2 text-sm">Bio</label>
+                <textarea name="bio"
+                    class="w-full px-4 py-3 rounded-xl bg-gray-900 border border-gray-700">{{ profile.bio }}</textarea>
+            </div>
+
+            <div>
+                <label class="block mb-2 text-sm">Hourly Rate</label>
+                <input type="number" name="hourly_rate" value="{{ profile.hourly_rate }}"
+                    class="w-full px-4 py-3 rounded-xl bg-gray-900 border border-gray-700">
+            </div>
+
+            <div>
+                <label class="block mb-2 text-sm">Experience (years)</label>
+                <input type="number" name="experience" value="{{ profile.experience }}"
+                    class="w-full px-4 py-3 rounded-xl bg-gray-900 border border-gray-700">
+            </div>
+
+            <div>
+                <label class="block mb-2 text-sm">Portfolio Link</label>
+                <input type="url" name="portfolio_link" value="{{ profile.portfolio_link }}"
+                    class="w-full px-4 py-3 rounded-xl bg-gray-900 border border-gray-700">
+            </div>
+
+            {% endif %}
+
+            <!-- Submit -->
+            <div>
+                <button type="submit"
+                    class="bg-gradient-to-r from-indigo-500 to-purple-600 px-6 py-2 rounded-xl font-semibold">
+                    Save Changes
+                </button>
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+{% endblock %}

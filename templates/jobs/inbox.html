@@ -1,0 +1,52 @@
+{% extends "jobs/jobs_base.html" %}
+
+{% block title %}Messages{% endblock %}
+
+{% block content %}
+
+<div class="max-w-4xl mx-auto mt-10 px-6">
+
+    <h2 class="text-2xl font-bold mb-6">Messages</h2>
+
+    {% if users %}
+
+    <div class="space-y-4">
+
+        {% for user in users %}
+
+        <a href="{% url 'chat' user.id %}" class="block bg-black/40 p-4 rounded-xl hover:bg-black/60 transition">
+
+            <div class="flex items-center gap-4">
+
+                {% if user.profile_picture %}
+                <img src="{{ user.profile_picture.url }}" class="w-12 h-12 rounded-full object-cover">
+                {% else %}
+                <div class="w-12 h-12 rounded-full bg-indigo-500 flex items-center justify-center font-bold">
+                    {{ user.username|first|upper }}
+                </div>
+                {% endif %}
+
+                <div>
+                    <p class="font-semibold">{{ user.username }}</p>
+                    <p class="text-sm opacity-70">{{ user.role }}</p>
+                </div>
+
+            </div>
+
+        </a>
+
+        {% endfor %}
+
+    </div>
+
+    {% else %}
+
+    <p class="text-center opacity-70 mt-10">
+        No conversations yet.
+    </p>
+
+    {% endif %}
+
+</div>
+
+{% endblock %}

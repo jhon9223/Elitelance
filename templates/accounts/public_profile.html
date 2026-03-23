@@ -1,0 +1,84 @@
+{% extends "jobs/jobs_base.html" %}
+
+{% block title %}Profile{% endblock %}
+
+{% block content %}
+
+<div class="max-w-4xl mx-auto mt-10 px-6">
+
+    <div class="bg-black/40 backdrop-blur-lg rounded-2xl p-8 border border-white/10">
+
+        <!-- Avatar -->
+        <div class="flex items-center justify-between mb-6">
+
+            <div class="flex items-center gap-6">
+
+                {% if profile_user.profile_picture %}
+                <img src="{{ profile_user.profile_picture.url }}" class="w-20 h-20 rounded-full object-cover">
+                {% else %}
+                <div class="w-20 h-20 rounded-full bg-indigo-500 flex items-center justify-center text-2xl font-bold">
+                    {{ profile_user.username|first|upper }}
+                </div>
+                {% endif %}
+
+                <div>
+                    <h2 class="text-2xl font-bold">{{ profile_user.username }}</h2>
+
+                    <p class="text-sm opacity-70">
+                        {{ profile_user.email }}
+                    </p>
+
+                    <p class="text-sm capitalize text-indigo-400">
+                        {{ profile_user.role }}
+                    </p>
+                </div>
+
+            </div>
+
+            <!-- 🔥 MESSAGE BUTTON -->
+            {% if request.user != profile_user %}
+            <a href="{% url 'chat' profile_user.id %}"
+                class="bg-indigo-600 px-5 py-2 rounded-full font-semibold hover:bg-indigo-500 transition">
+                Message
+            </a>
+            {% endif %}
+
+        </div>
+
+        <hr class="border-white/10 my-6">
+
+        <!-- Role Based -->
+
+        {% if profile_user.role == 'client' %}
+
+        <p>
+            <strong>Company:</strong>
+            {{ profile.company_name|default:"Not provided" }}
+        </p>
+
+        <p class="mt-2">
+            {{ profile.company_description|default:"No description" }}
+        </p>
+
+        {% elif profile_user.role == 'freelancer' %}
+
+        <p>
+            <strong>Skills:</strong>
+            {{ profile.skills|default:"Not provided" }}
+        </p>
+
+        <p class="mt-2">
+            {{ profile.bio|default:"No bio" }}
+        </p>
+
+        <p class="mt-2">
+            ₹ {{ profile.hourly_rate|default:"Not set" }}/hr
+        </p>
+
+        {% endif %}
+
+    </div>
+
+</div>
+
+{% endblock %}

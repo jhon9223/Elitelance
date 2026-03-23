@@ -1,0 +1,83 @@
+{% extends "jobs/jobs_base.html" %}
+
+{% block title %}My Profile{% endblock %}
+
+{% block content %}
+
+<div class="max-w-4xl mx-auto mt-10 px-6">
+
+    <div class="bg-black/40 backdrop-blur-lg rounded-2xl p-8 border border-white/10">
+
+        <!-- Avatar + Basic Info -->
+        <div class="flex items-center gap-6 mb-6">
+
+            {% if user.profile_picture %}
+            <img src="{{ user.profile_picture.url }}" class="w-20 h-20 rounded-full object-cover">
+            {% else %}
+            <div class="w-20 h-20 rounded-full bg-indigo-500 flex items-center justify-center text-2xl font-bold">
+                {{ user.username|first|upper }}
+            </div>
+            {% endif %}
+
+            <div>
+                <h2 class="text-2xl font-bold">{{ user.username }}</h2>
+
+                <p class="text-sm opacity-70">
+                    {{ user.email }}
+                </p>
+
+                <p class="text-sm text-indigo-400 capitalize">
+                    {{ user.role }}
+                </p>
+            </div>
+
+        </div>
+
+        <hr class="border-white/10 my-6">
+
+        <!-- CLIENT PROFILE -->
+        {% if user.role == 'client' %}
+
+        <p class="mb-2">
+            <strong>Company:</strong>
+            {{ user.client_profile.company_name|default:"Not provided" }}
+        </p>
+
+        <p class="opacity-70">
+            {{ user.client_profile.company_description|default:"No description" }}
+        </p>
+
+        {% endif %}
+
+        <!-- FREELANCER PROFILE -->
+        {% if user.role == 'freelancer' %}
+
+        <p class="mb-2">
+            <strong>Skills:</strong>
+            {{ user.freelancer_profile.skills|default:"Not provided" }}
+        </p>
+
+        <p class="mb-2 opacity-70">
+            {{ user.freelancer_profile.bio|default:"No bio" }}
+        </p>
+
+        <p>
+            <strong>Hourly Rate:</strong>
+            ₹ {{ user.freelancer_profile.hourly_rate|default:"Not set" }}/hr
+        </p>
+
+        {% endif %}
+
+        <!-- 🔥 EDIT BUTTON -->
+        <div class="mt-6">
+            <a href="{% url 'edit_profile' %}"
+                class="inline-block bg-indigo-600 px-6 py-2 rounded-full font-semibold hover:bg-indigo-500 transition">
+                Edit Profile
+            </a>
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

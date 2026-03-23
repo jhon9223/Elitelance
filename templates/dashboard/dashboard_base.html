@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="min-h-screen bg-gray-950 text-white px-8 py-10">
+
+    <div class="flex justify-between items-center mb-10">
+        <h1 class="text-3xl font-bold">Dashboard</h1>
+
+        <div class="flex gap-4 text-sm">
+
+            {% if user.role == "client" %}
+            <a href="{% url 'job_create' %}" class="bg-teal-600 px-4 py-2 rounded-lg">Create Job</a>
+            <a href="{% url 'job_list' %}" class="bg-gray-700 px-4 py-2 rounded-lg">My Jobs</a>
+            {% elif user.role == "freelancer" %}
+            <a href="{% url 'job_list' %}" class="bg-teal-600 px-4 py-2 rounded-lg">Browse Jobs</a>
+            <a href="{% url 'my_proposals' %}" class="bg-gray-700 px-4 py-2 rounded-lg">My Proposals</a>
+            {% elif user.role == "manager" %}
+            <a href="{% url 'job_list' %}" class="bg-teal-600 px-4 py-2 rounded-lg">All Jobs</a>
+            {% endif %}
+            <a href="{% url 'inbox' %}"
+                class="flex items-center gap-2 bg-indigo-600 hover:bg-indigo-500 text-white px-5 py-2 rounded-full font-semibold transition">
+
+                <!-- Icon -->
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24"
+                    stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M8 10h.01M12 10h.01M16 10h.01M21 12c0 4.418-4.03 8-9 8a9.77 9.77 0 01-4-.8L3 20l1.8-3.6A7.5 7.5 0 013 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+                </svg>
+
+                Messages
+            </a>
+        </div>
+    </div>
+
+    {% block dashboard_content %}
+    {% endblock %}
+
+</div>
+
+{% endblock %}
