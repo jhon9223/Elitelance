@@ -1,18 +1,15 @@
-from django.contrib.messages import get_messages
-from django.urls import reverse
-from django.contrib.auth import logout
-from django.shortcuts import redirect
-from django.contrib.auth import authenticate, login
-from django.shortcuts import get_object_or_404
-from django.contrib.auth import get_user_model
-from django.shortcuts import render, redirect
-from django.contrib.auth import authenticate, login, logout
+from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib.auth import authenticate, login, logout, get_user_model
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
+from django.contrib.messages import get_messages
+
 from .forms import RegisterForm, LoginForm
 
 
-#  CENTRAL ROLE REDIRECT FUNCTION
+# -----------------------------
+# ROLE BASED REDIRECT
+# -----------------------------
 def redirect_user_by_role(user):
 
     if user.is_superuser:
@@ -20,17 +17,17 @@ def redirect_user_by_role(user):
 
     if user.role == 'manager':
         return redirect('manager_dashboard')
-
     elif user.role == 'client':
         return redirect('client_dashboard')
-
     elif user.role == 'freelancer':
         return redirect('freelancer_dashboard')
 
     return redirect('landing_page')
 
 
-#  REGISTER
+# -----------------------------
+# REGISTER
+# -----------------------------
 def register_view(request):
 
     if request.method == 'POST':
@@ -38,12 +35,10 @@ def register_view(request):
 
         if form.is_valid():
             user = form.save()
-
             login(request, user)
+
             messages.success(request, "Account created successfully!")
-
             return redirect_user_by_role(user)
-
         else:
             messages.error(request, "Please fix the errors below.")
 
@@ -53,12 +48,12 @@ def register_view(request):
     return render(request, 'accounts/register.html', {'form': form})
 
 
-#  LOGIN
-
-
+# -----------------------------
+# LOGIN (FIXED)
+# -----------------------------
 def login_view(request):
 
-    # ❌ Clear old messages (like logout message)
+    # Clear old messages
     storage = get_messages(request)
     for _ in storage:
         pass
@@ -67,60 +62,70 @@ def login_view(request):
         form = LoginForm(request.POST)
 
         if form.is_valid():
-            username = form.cleaned_data['username']
-            password = form.cleaned_data['password']
+            username = form.cleaned_data.get('username')
+            password = form.cleaned_data.get('password')
 
-            user = authenticate(request, username=username, password=password)
+            try:
+                user = authenticate(
+                    request, username=username, password=password)
 
-            if user:
-                login(request, user)
-                messages.success(request, "Logged in successfully!")
+                if user is not None:
+                    login(request, user)
+                    messages.success(request, "Logged in successfully!")
+                    return redirect_user_by_role(user)
+                else:
+                    messages.error(request, "Invalid username or password")
 
-                return redirect_user_by_role(user)
+            except Exception as e:
+                # Prevent 500 crash in production
+                print("Login error:", e)
+                messages.error(
+                    request, "Something went wrong. Please try again.")
 
-            else:
-                messages.error(request, "Invalid username or password")
+        else:
+            messages.error(request, "Invalid form submission")
 
     else:
         form = LoginForm()
 
     return render(request, 'accounts/login.html', {'form': form})
-# logout view
 
 
+# -----------------------------
+# LOGOUT
+# -----------------------------
 @login_required
 def logout_view(request):
-    logout(request)
 
-    #  Add message ONLY here
+    logout(request)
     messages.success(request, "Logged out successfully")
 
     return redirect('landing_page')
 
-#  PROFILE VIEW
 
-
+# -----------------------------
+# PROFILE VIEW
+# -----------------------------
 @login_required
 def profile_view(request):
 
-    user = request.user  # get the logged in user
+    user = request.user
     profile = None
     profile_incomplete = False
 
     if user.role == 'client':
-        profile = user.client_profile  # access the related ClientProfile
-        # reverse look up
+        profile = getattr(user, 'client_profile', None)
 
-        if not profile.company_name:
+        if profile and not profile.company_name:
             profile_incomplete = True
 
     elif user.role == 'freelancer':
-        profile = user.freelancer_profile
+        profile = getattr(user, 'freelancer_profile', None)
 
-        if not profile.skills or not profile.bio:
+        if profile and (not profile.skills or not profile.bio):
             profile_incomplete = True
 
-    # check profile picture also
+    # Check profile picture
     if not user.profile_picture:
         profile_incomplete = True
 
@@ -133,12 +138,13 @@ def profile_view(request):
     return render(request, 'accounts/profile.html', context)
 
 
-#  EDIT PROFILE
+# -----------------------------
+# EDIT PROFILE
+# -----------------------------
 @login_required
 def edit_profile(request):
 
     user = request.user
-
     profile = None
 
     if user.role == 'client':
@@ -148,7 +154,7 @@ def edit_profile(request):
 
     if request.method == 'POST':
 
-        #  PROFILE IMAGE (IMPORTANT)
+        # Profile image
         if request.FILES.get('profile_picture'):
             user.profile_picture = request.FILES.get('profile_picture')
             user.save()
@@ -172,28 +178,27 @@ def edit_profile(request):
         messages.success(request, "Profile updated successfully")
         return redirect('profile')
 
-    return render(request, 'accounts/edit_profile.html', {
-        'profile': profile
-    })
+    return render(request, 'accounts/edit_profile.html', {'profile': profile})
 
 
+# -----------------------------
+# PUBLIC PROFILE
+# -----------------------------
 User = get_user_model()
 
 
 def public_profile_view(request, pk):
 
     user_obj = get_object_or_404(User, pk=pk)
-
     profile = None
 
     if user_obj.role == 'client':
         profile = getattr(user_obj, 'client_profile', None)
-
     elif user_obj.role == 'freelancer':
         profile = getattr(user_obj, 'freelancer_profile', None)
 
     context = {
-        'profile_user': user_obj,  # IMPORTANT (not request.user)
+        'profile_user': user_obj,
         'profile': profile,
     }
 
