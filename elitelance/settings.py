@@ -1,27 +1,17 @@
 import os
 from pathlib import Path
 
-
-# BASE DIRECTORY
-
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-
 # SECURITY
+SECRET_KEY = 'django-insecure-change-this'  # you can keep this for now
 
-SECRET_KEY = os.environ.get('SECRET_KEY', 'django-insecure-change-this')
+DEBUG = True   # ✅ KEEP TRUE DURING SETUP
 
-DEBUG = True
-
-ALLOWED_HOSTS = [
-    '.onrender.com',   # allow render domain
-    'localhost',
-    '127.0.0.1',
-]
+ALLOWED_HOSTS = ['*']   # ✅ avoid host errors for now
 
 
 # APPLICATIONS
-
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -41,16 +31,14 @@ INSTALLED_APPS = [
     'rest_framework',
 ]
 
-
 AUTH_USER_MODEL = 'accounts.User'
 
 
 # MIDDLEWARE
-
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
 
-    # ✅ WhiteNoise for static files
+    # static files
     'whitenoise.middleware.WhiteNoiseMiddleware',
 
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -63,12 +51,10 @@ MIDDLEWARE = [
 
 
 # URLS
-
 ROOT_URLCONF = 'elitelance.urls'
 
 
 # TEMPLATES
-
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
@@ -87,12 +73,10 @@ TEMPLATES = [
 
 
 # WSGI
-
 WSGI_APPLICATION = 'elitelance.wsgi.application'
 
 
-# DATABASE (SQLite for now)
-
+# DATABASE (SQLite - perfect for PythonAnywhere)
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
@@ -102,7 +86,6 @@ DATABASES = {
 
 
 # PASSWORD VALIDATION
-
 AUTH_PASSWORD_VALIDATORS = [
     {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator'},
     {'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator'},
@@ -112,7 +95,6 @@ AUTH_PASSWORD_VALIDATORS = [
 
 
 # INTERNATIONALIZATION
-
 LANGUAGE_CODE = 'en-us'
 TIME_ZONE = 'UTC'
 
@@ -120,8 +102,7 @@ USE_I18N = True
 USE_TZ = True
 
 
-# STATIC FILES (IMPORTANT)
-
+# STATIC FILES
 STATIC_URL = '/static/'
 
 STATICFILES_DIRS = [
@@ -134,35 +115,9 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 
 # MEDIA FILES
-
 MEDIA_URL = '/media/'
-MEDIA_ROOT = BASE_DIR / 'uploads'
+MEDIA_ROOT = BASE_DIR / 'media'
 
 
 # DEFAULT PK
-
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
-
-# ENV VARIABLES
-
-HUGGINGFACE_API_TOKEN = os.environ.get("HUGGINGFACE_API_TOKEN")
-
-
-# OPTIONAL (BETTER SECURITY)
-
-SECURE_BROWSER_XSS_FILTER = True
-SECURE_CONTENT_TYPE_NOSNIFF = True
-X_FRAME_OPTIONS = 'DENY'
-
-# RENDER PRODUCTION FIXES
-
-
-CSRF_TRUSTED_ORIGINS = [
-    'https://elitelance.onrender.com',
-]
-
-SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
-
-SESSION_COOKIE_SECURE = True
-CSRF_COOKIE_SECURE = True
