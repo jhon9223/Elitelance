@@ -34,7 +34,7 @@ def job_list(request):
     # Base queryset
     jobs = Job.objects.all().select_related('created_by')
 
-    # 🔍 Search
+    #  Search
     search_query = request.GET.get('search', '')
     if search_query:
         jobs = jobs.filter(
@@ -42,12 +42,12 @@ def job_list(request):
             Q(description__icontains=search_query)
         )
 
-    # 📊 Status filter
+    #  Status filter
     status_filter = request.GET.get('status', '')
     if status_filter:
         jobs = jobs.filter(status=status_filter)
 
-    # 👤 Role-based filtering
+    #  Role-based filtering
     if request.user.is_authenticated:
         if request.user.role == 'client':
             jobs = jobs.filter(created_by=request.user)
@@ -56,7 +56,7 @@ def job_list(request):
     else:
         jobs = jobs.filter(status='open')
 
-    # 🔃 Sorting
+    #  Sorting
     sort_by = request.GET.get('sort', '')
 
     if sort_by == 'budget':
@@ -66,12 +66,12 @@ def job_list(request):
     else:
         jobs = jobs.order_by('-created_at')
 
-    # 📄 Pagination
+    #  Pagination
     paginator = Paginator(jobs, 4)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
 
-    # ✅ Flags for template (IMPORTANT FIX)
+    #  Flags for template (IMPORTANT FIX)
     is_budget = sort_by == 'budget'
     is_deadline = sort_by == 'deadline'
 
@@ -309,7 +309,7 @@ def complete_job(request, pk):
     return redirect('job_detail', pk=job.pk)
 
 
-# 🔍 Explore Clients (for freelancers)
+#  Explore Clients (for freelancers)
 def explore_clients(request):
 
     clients = User.objects.filter(role='client')
@@ -324,7 +324,7 @@ def explore_clients(request):
     })
 
 
-# 🔍 Explore Freelancers (for clients)
+#  Explore Freelancers (for clients)
 
 User = get_user_model()
 
@@ -442,7 +442,6 @@ def generate_job_description(request):
         except Exception as e:
             print("AI ERROR:", str(e))
 
-        # 🔥 FALLBACK (ALWAYS WORKS)
         fallback = f"""
 We are looking for a skilled {title} to join our team.
 

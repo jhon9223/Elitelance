@@ -1,11 +1,7 @@
-🚀 EliteLance – Freelancing Marketplace
+EliteLance – Freelancing Marketplace
 EliteLance is a modern freelancing platform where clients can post jobs and freelancers can apply, collaborate, and complete projects efficiently.
 Built with Django, this project demonstrates a full-stack web application with role-based access, dashboards, notifications, and REST APIs.
 
-🌐 Live Demo
-
-
-📸 Preview
 
 
 🚀 Features
@@ -35,20 +31,22 @@ Apply with proposals
 
 
 📊 Dashboards
-👤 Client Dashboard
+
+
+ Client Dashboard
 
 Total jobs overview
 Proposal tracking
 Recent job activity
 
-🧑‍💻 Freelancer Dashboard
+ Freelancer Dashboard
 
 Total proposals
 Accepted proposals
 Active contracts
 Completed work
 
-🧑‍💼 Manager Dashboard
+ Manager Dashboard
 
 Platform analytics
 User, job, and contract insights
@@ -135,8 +133,7 @@ Job recommendations
 Advanced analytics dashboard
 
 
-🤝 Contributing
-Feel free to fork this repository and contribute!
+
 
 📧 Contact
 
@@ -144,5 +141,4 @@ GitHub: https://github.com/jhon9223
 LinkedIn: https://www.linkedin.com/in/dev-johnnj
 
 
-⭐ Show your support
-If you like this project, give it a ⭐ on GitHub!
+

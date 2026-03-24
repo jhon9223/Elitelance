@@ -12,7 +12,7 @@ from django.contrib import messages
 from .forms import RegisterForm, LoginForm
 
 
-# 🔁 CENTRAL ROLE REDIRECT FUNCTION
+#  CENTRAL ROLE REDIRECT FUNCTION
 def redirect_user_by_role(user):
 
     if user.is_superuser:
@@ -30,7 +30,7 @@ def redirect_user_by_role(user):
     return redirect('landing_page')
 
 
-# 🔐 REGISTER
+#  REGISTER
 def register_view(request):
 
     if request.method == 'POST':
@@ -53,7 +53,7 @@ def register_view(request):
     return render(request, 'accounts/register.html', {'form': form})
 
 
-# 🔐 LOGIN
+#  LOGIN
 
 
 def login_view(request):
@@ -92,12 +92,12 @@ def login_view(request):
 def logout_view(request):
     logout(request)
 
-    # ✅ Add message ONLY here
+    #  Add message ONLY here
     messages.success(request, "Logged out successfully")
 
     return redirect('landing_page')
 
-# 👤 PROFILE VIEW
+#  PROFILE VIEW
 
 
 @login_required
@@ -133,7 +133,7 @@ def profile_view(request):
     return render(request, 'accounts/profile.html', context)
 
 
-# ✏️ EDIT PROFILE
+#  EDIT PROFILE
 @login_required
 def edit_profile(request):
 
@@ -148,7 +148,7 @@ def edit_profile(request):
 
     if request.method == 'POST':
 
-        # ✅ PROFILE IMAGE (IMPORTANT)
+        #  PROFILE IMAGE (IMPORTANT)
         if request.FILES.get('profile_picture'):
             user.profile_picture = request.FILES.get('profile_picture')
             user.save()
@@ -193,7 +193,7 @@ def public_profile_view(request, pk):
         profile = getattr(user_obj, 'freelancer_profile', None)
 
     context = {
-        'profile_user': user_obj,   # 👈 IMPORTANT (not request.user)
+        'profile_user': user_obj,  # IMPORTANT (not request.user)
         'profile': profile,
     }
 

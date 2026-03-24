@@ -2,9 +2,8 @@ from django import forms
 from .models import Job, Proposal
 
 
-# =========================
 # Shared Tailwind Styling
-# =========================
+
 
 BASE_INPUT_CLASS = """
 w-full px-4 py-3 rounded-xl
@@ -15,9 +14,8 @@ transition
 """
 
 
-# =========================
 # Job Create Form
-# =========================
+
 
 class JobForm(forms.ModelForm):
 
@@ -50,9 +48,8 @@ class JobForm(forms.ModelForm):
         }
 
 
-# =========================
 # Proposal Submit Form
-# =========================
+
 
 class ProposalForm(forms.ModelForm):
 
