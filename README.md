@@ -1,33 +1,32 @@
 🚀 EliteLance – Freelancing Marketplace
 EliteLance is a modern freelancing platform where clients can post jobs and freelancers can apply, collaborate, and complete projects efficiently.
-Built with Django, this project demonstrates a full-stack web application with role-based access, dashboards, and real-world workflow.
+Built with Django, this project demonstrates a full-stack web application with role-based access, dashboards, notifications, and REST APIs.
 
 🌐 Live Demo
 
-(Add your deployed link here later)
+
+📸 Preview
 
 
-📌 Features
-👤 Authentication & Roles
+🚀 Features
+🔐 Authentication & Roles
 
 User registration & login system
 Role-based access:
 
-🧑‍💼 Client
-👨‍💻 Freelancer
-🧑‍💻 Manager
+👤 Client
+🧑‍💻 Freelancer
+🧑‍💼 Manager
 
 
 
 
 💼 Job Management
-
 Clients can:
 
 Post jobs
 View proposals
-Manage their listings
-
+Manage job listings
 
 Freelancers can:
 
@@ -35,22 +34,21 @@ Browse jobs
 Apply with proposals
 
 
-
-
 📊 Dashboards
-🧑‍💼 Client Dashboard
+👤 Client Dashboard
 
 Total jobs overview
 Proposal tracking
 Recent job activity
 
-👨‍💻 Freelancer Dashboard
+🧑‍💻 Freelancer Dashboard
 
 Total proposals
 Accepted proposals
-Active & completed contracts
+Active contracts
+Completed work
 
-🧑‍💻 Manager Dashboard
+🧑‍💼 Manager Dashboard
 
 Platform analytics
 User, job, and contract insights
@@ -59,8 +57,9 @@ User, job, and contract insights
 🔔 Notification System
 
 Real-time styled UI notifications
-Bell icon with dynamic updates
-Clean toast message alerts
+Notification bell icon
+Dynamic updates
+Clean toast alerts
 
 
 🎨 UI/UX
@@ -68,7 +67,7 @@ Clean toast message alerts
 Modern glassmorphism design
 Aurora gradient background
 Smooth animations & transitions
-Responsive layout
+Fully responsive layout
 
 
 ⚙️ Admin Panel
@@ -78,7 +77,7 @@ Client & Freelancer profile management
 Profile image preview in admin
 
 
-🔗 API (Django REST Framework)
+🔌 API (Django REST Framework)
 
 Job listing API
 Token-based authentication
@@ -93,29 +92,29 @@ Database: SQLite (development)
 Version Control: Git & GitHub
 
 
-📂 Project Structure
+📁 Project Structure
 elitelance/
 │
-├── accounts/        # User & profiles
+├── accounts/        # User & profile management
 ├── jobs/            # Job & proposal logic
 ├── dashboard/       # Role-based dashboards
-├── api/             # REST API
+├── api/             # REST APIs
 ├── templates/       # HTML templates
-└── static/          # Static files
+├── static/          # Static files
+├── manage.py
+└── requirements.txt
 
 
-⚡ Installation
-# Clone the repo
-git clone https://github.com/jhon9223/Elitelance.git
-
-# Go into project
-cd elitelance
+⚙️ Setup Instructions
+# Clone repository
+git clone https://github.com/jhon9223/Elitelance
+cd Elitelance
 
 # Create virtual environment
 python -m venv env
 
-# Activate environment
-env\Scripts\activate   # Windows
+# Activate environment (Windows)
+env\Scripts\activate
 
 # Install dependencies
 pip install -r requirements.txt
@@ -127,27 +126,23 @@ python manage.py migrate
 python manage.py runserver
 
 
-📸 Screenshots
+🚀 Future Improvements
 
-(Add screenshots later for better impact)
-
-
-🚀 Future Improvements (v2)
-
+Payment integration (Stripe/Razorpay)
 Real-time chat system
-Job lifecycle (complete/cancel)
-Advanced notification system
-Payment integration
-Search & filtering improvements
+Email notifications
+Job recommendations
+Advanced analytics dashboard
 
 
-👨‍💻 Author
-John Nj
+🤝 Contributing
+Feel free to fork this repository and contribute!
+
+📧 Contact
 
 GitHub: https://github.com/jhon9223
 LinkedIn: https://www.linkedin.com/in/dev-johnnj
 
 
-⭐ Show Your Support
-If you like this project, consider giving it a ⭐ on GitHub!
-
+⭐ Show your support
+If you like this project, give it a ⭐ on GitHub!
