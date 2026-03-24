@@ -13,7 +13,11 @@ SECRET_KEY = os.environ.get('SECRET_KEY', 'django-insecure-change-this')
 
 DEBUG = False
 
-ALLOWED_HOSTS = ['*']   # we’ll tighten later
+ALLOWED_HOSTS = [
+    '.onrender.com',   # allow render domain
+    'localhost',
+    '127.0.0.1',
+]
 
 
 # APPLICATIONS
@@ -37,6 +41,7 @@ INSTALLED_APPS = [
     'rest_framework',
 ]
 
+
 AUTH_USER_MODEL = 'accounts.User'
 
 
@@ -45,7 +50,7 @@ AUTH_USER_MODEL = 'accounts.User'
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
 
-    # ✅ WhiteNoise (IMPORTANT)
+    # ✅ WhiteNoise for static files
     'whitenoise.middleware.WhiteNoiseMiddleware',
 
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -67,11 +72,8 @@ ROOT_URLCONF = 'elitelance.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-
         'DIRS': [BASE_DIR / 'templates'],
-
         'APP_DIRS': True,
-
         'OPTIONS': {
             'context_processors': [
                 'django.template.context_processors.debug',
@@ -89,7 +91,7 @@ TEMPLATES = [
 WSGI_APPLICATION = 'elitelance.wsgi.application'
 
 
-# DATABASE
+# DATABASE (SQLite for now)
 
 DATABASES = {
     'default': {
@@ -118,7 +120,7 @@ USE_I18N = True
 USE_TZ = True
 
 
-# STATIC FILES
+# STATIC FILES (IMPORTANT)
 
 STATIC_URL = '/static/'
 
@@ -128,7 +130,6 @@ STATICFILES_DIRS = [
 
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 
-# Required for production static files
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 
@@ -146,3 +147,10 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # ENV VARIABLES
 
 HUGGINGFACE_API_TOKEN = os.environ.get("HUGGINGFACE_API_TOKEN")
+
+
+# OPTIONAL (BETTER SECURITY)
+
+SECURE_BROWSER_XSS_FILTER = True
+SECURE_CONTENT_TYPE_NOSNIFF = True
+X_FRAME_OPTIONS = 'DENY'
