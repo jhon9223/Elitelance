@@ -28,28 +28,40 @@
     <!-- STATS -->
     <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
 
+        <!-- Total Proposals -->
         <div class="bg-white/5 backdrop-blur-xl border border-white/10 
                     rounded-2xl p-6 shadow-lg hover:-translate-y-1 transition">
             <p class="text-sm opacity-70">Total Proposals</p>
-            <h2 class="text-2xl font-bold mt-2">{{ total_proposals }}</h2>
+            <h2 class="text-2xl font-bold mt-2">
+                {{ total_proposals|default:0 }}
+            </h2>
         </div>
 
+        <!-- Accepted -->
         <div class="bg-white/5 backdrop-blur-xl border border-white/10 
                     rounded-2xl p-6 shadow-lg hover:-translate-y-1 transition">
             <p class="text-sm opacity-70">Accepted</p>
-            <h2 class="text-2xl font-bold mt-2 text-green-400">{{ accepted }}</h2>
+            <h2 class="text-2xl font-bold mt-2 text-green-400">
+                {{ accepted_proposals|default:0 }}
+            </h2>
         </div>
 
+        <!-- Active Contracts -->
         <div class="bg-white/5 backdrop-blur-xl border border-white/10 
                     rounded-2xl p-6 shadow-lg hover:-translate-y-1 transition">
             <p class="text-sm opacity-70">Active Contracts</p>
-            <h2 class="text-2xl font-bold mt-2 text-indigo-400">{{ active }}</h2>
+            <h2 class="text-2xl font-bold mt-2 text-indigo-400">
+                {{ active_contracts|default:0 }}
+            </h2>
         </div>
 
+        <!-- Completed -->
         <div class="bg-white/5 backdrop-blur-xl border border-white/10 
                     rounded-2xl p-6 shadow-lg hover:-translate-y-1 transition">
             <p class="text-sm opacity-70">Completed</p>
-            <h2 class="text-2xl font-bold mt-2 text-purple-400">{{ completed }}</h2>
+            <h2 class="text-2xl font-bold mt-2 text-purple-400">
+                {{ completed_contracts|default:0 }}
+            </h2>
         </div>
 
     </div>
@@ -59,26 +71,32 @@
 
     <div class="space-y-4">
 
-        {% for job in recent_jobs %}
+        {% for proposal in recent_proposals %}
+
         <div class="bg-white/5 backdrop-blur-xl border border-white/10 
                     rounded-xl p-4 flex justify-between items-center 
                     hover:bg-white/10 transition">
 
+            <!-- Job Title -->
             <span>{{ proposal.job.title }}</span>
 
+            <!-- Status Badge -->
             <span class="text-sm px-3 py-1 rounded-full
                 {% if proposal.status == 'pending' %}
                     bg-yellow-500/20 text-yellow-300
                 {% elif proposal.status == 'accepted' %}
                     bg-green-500/20 text-green-300
-                {% else %}
+                {% elif proposal.status == 'rejected' %}
                     bg-red-500/20 text-red-300
+                {% else %}
+                    bg-gray-500/20 text-gray-300
                 {% endif %}
             ">
                 {{ proposal.status|title }}
             </span>
 
         </div>
+
         {% empty %}
         <p class="opacity-70">No proposals yet.</p>
         {% endfor %}

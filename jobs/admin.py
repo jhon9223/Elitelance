@@ -7,3 +7,4 @@ admin.site.register(Proposal)
 admin.site.register(Contract)
 
 admin.site.register(Message)
+admin.site.register(Job)

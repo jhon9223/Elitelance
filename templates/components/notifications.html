@@ -1,0 +1,48 @@
+<!-- 🔔 NOTIFICATIONS -->
+<div class="fixed top-6 right-6 z-50 space-y-3">
+
+    {% for message in messages %}
+    <div class="
+        px-5 py-3 rounded-xl shadow-lg backdrop-blur-lg border
+        animate-slideIn
+        {% if message.tags == 'success' %}
+            bg-green-500/20 border-green-400 text-green-300
+        {% elif message.tags == 'error' %}
+            bg-red-500/20 border-red-400 text-red-300
+        {% else %}
+            bg-white/10 border-white/20 text-white
+        {% endif %}
+    ">
+        {{ message }}
+    </div>
+    {% endfor %}
+
+</div>
+
+<style>
+    @keyframes slideIn {
+        from {
+            opacity: 0;
+            transform: translateX(50px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateX(0);
+        }
+    }
+
+    .animate-slideIn {
+        animation: slideIn 0.4s ease;
+    }
+</style>
+
+<script>
+    setTimeout(() => {
+        document.querySelectorAll('[class*="animate-slideIn"]').forEach(el => {
+            el.style.opacity = '0';
+            el.style.transform = 'translateX(50px)';
+            setTimeout(() => el.remove(), 300);
+        });
+    }, 3000);
+</script>

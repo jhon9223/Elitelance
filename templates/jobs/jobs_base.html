@@ -121,10 +121,12 @@
                 </span>
 
             </a>
+
             <a href="{% url 'inbox' %}"
                 class="flex items-center gap-2 bg-indigo-600 hover:bg-indigo-500 px-5 py-2 rounded-full font-semibold transition">
                 💬 Messages
             </a>
+
 
             {% if user.role == "client" %}
             <a href="{% url 'job_create' %}" class="bg-teal-600 px-4 py-2 rounded-full font-semibold">
@@ -147,6 +149,41 @@
             </a>
 
             {% endif %}
+            <div class="relative">
+
+                <!-- 🔔 Bell -->
+                <button onclick="toggleNotifications()" class="relative">
+                    🔔
+
+                    <!-- Count -->
+                    {% if notification_count > 0 %}
+                    <span class="absolute -top-2 -right-2 bg-red-500 text-white text-xs px-2 py-0.5 rounded-full">
+                        {{ notification_count }}
+                    </span>
+                    {% endif %}
+                </button>
+
+                <!-- Dropdown -->
+                <div id="notificationDropdown"
+                    class="hidden absolute right-0 mt-3 w-72 bg-black/70 backdrop-blur-lg border border-white/10 rounded-xl shadow-lg p-4">
+
+                    <h4 class="text-sm font-semibold mb-3 text-gray-300">Notifications</h4>
+
+                    {% if notifications %}
+                    <ul class="space-y-2 text-sm text-gray-300">
+                        {% for note in notifications %}
+                        <li class="border-b border-white/10 pb-2">
+                            {{ note }}
+                        </li>
+                        {% endfor %}
+                    </ul>
+                    {% else %}
+                    <p class="text-gray-400 text-sm">No notifications</p>
+                    {% endif %}
+
+                </div>
+
+            </div>
 
         </div>
 
@@ -165,6 +202,13 @@
         {% endif %}
         {% block content %}
         {% endblock %}
+        {% include "components/notifications.html" %}
+        <script>
+            function toggleNotifications() {
+                const dropdown = document.getElementById('notificationDropdown');
+                dropdown.classList.toggle('hidden');
+            }
+        </script>
         {% block extra_js %}
         {% endblock %}
     </main>

@@ -348,7 +348,6 @@ def chat_view(request, user_id):
 
     other_user = get_object_or_404(User, id=user_id)
 
-    # 🔥 Get conversation (both directions)
     messages = Message.objects.filter(
         sender=request.user,
         receiver=other_user
@@ -359,7 +358,7 @@ def chat_view(request, user_id):
 
     messages = messages.order_by('timestamp')
 
-    # 🔥 Send message
+    #  Send message
     if request.method == 'POST':
         content = request.POST.get('content')
 
@@ -435,7 +434,6 @@ def generate_job_description(request):
             result = response.json()
             print("AI RAW:", result)
 
-            # ✅ SUCCESS CASE
             if isinstance(result, list) and "generated_text" in result[0]:
                 return JsonResponse({
                     "description": result[0]["generated_text"]

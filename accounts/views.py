@@ -1,3 +1,8 @@
+from django.contrib.messages import get_messages
+from django.urls import reverse
+from django.contrib.auth import logout
+from django.shortcuts import redirect
+from django.contrib.auth import authenticate, login
 from django.shortcuts import get_object_or_404
 from django.contrib.auth import get_user_model
 from django.shortcuts import render, redirect
@@ -49,7 +54,14 @@ def register_view(request):
 
 
 # 🔐 LOGIN
+
+
 def login_view(request):
+
+    # ❌ Clear old messages (like logout message)
+    storage = get_messages(request)
+    for _ in storage:
+        pass
 
     if request.method == 'POST':
         form = LoginForm(request.POST)
@@ -73,17 +85,21 @@ def login_view(request):
         form = LoginForm()
 
     return render(request, 'accounts/login.html', {'form': form})
+# logout view
 
 
-# 🔓 LOGOUT
 @login_required
 def logout_view(request):
     logout(request)
+
+    # ✅ Add message ONLY here
     messages.success(request, "Logged out successfully")
+
     return redirect('landing_page')
 
-
 # 👤 PROFILE VIEW
+
+
 @login_required
 def profile_view(request):
 
