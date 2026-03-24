@@ -1,9 +1,12 @@
-# Python
+ # Python
 __pycache__/
 *.pyc
 
 # Django
 db.sqlite3
+
+# Media files
+uploads/
 media/
 
 # Environment
@@ -16,6 +19,3 @@ venv/
 
 # OS
 .DS_Store
-
-
-.env
