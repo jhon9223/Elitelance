@@ -7,9 +7,8 @@ from django.contrib.messages import get_messages
 from .forms import RegisterForm, LoginForm
 
 
-# -----------------------------
 # ROLE BASED REDIRECT
-# -----------------------------
+
 def redirect_user_by_role(user):
 
     if user.is_superuser:
@@ -25,9 +24,8 @@ def redirect_user_by_role(user):
     return redirect('landing_page')
 
 
-# -----------------------------
 # REGISTER
-# -----------------------------
+
 def register_view(request):
 
     if request.method == 'POST':
@@ -48,9 +46,8 @@ def register_view(request):
     return render(request, 'accounts/register.html', {'form': form})
 
 
-# -----------------------------
 # LOGIN (FIXED)
-# -----------------------------
+
 def login_view(request):
 
     # Clear old messages
@@ -91,9 +88,8 @@ def login_view(request):
     return render(request, 'accounts/login.html', {'form': form})
 
 
-# -----------------------------
 # LOGOUT
-# -----------------------------
+
 @login_required
 def logout_view(request):
 
@@ -103,9 +99,8 @@ def logout_view(request):
     return redirect('landing_page')
 
 
-# -----------------------------
 # PROFILE VIEW
-# -----------------------------
+
 @login_required
 def profile_view(request):
 
@@ -138,9 +133,8 @@ def profile_view(request):
     return render(request, 'accounts/profile.html', context)
 
 
-# -----------------------------
 # EDIT PROFILE
-# -----------------------------
+
 @login_required
 def edit_profile(request):
 
@@ -181,9 +175,7 @@ def edit_profile(request):
     return render(request, 'accounts/edit_profile.html', {'profile': profile})
 
 
-# -----------------------------
 # PUBLIC PROFILE
-# -----------------------------
 User = get_user_model()
 
 
