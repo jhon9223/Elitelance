@@ -1,17 +1,32 @@
 import os
 from pathlib import Path
 
+#  LOAD ENV FILE (IMPORTANT)
+from dotenv import load_dotenv
+load_dotenv()
+
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+
 # SECURITY
-SECRET_KEY = 'django-insecure-change-this'  # you can keep this for now
 
-DEBUG = True   # ✅ KEEP TRUE DURING SETUP
+SECRET_KEY = 'django-insecure-change-this'
 
-ALLOWED_HOSTS = ['*']   # ✅ avoid host errors for now
+DEBUG = True
+
+ALLOWED_HOSTS = ['*']
+
+
+# ENV VARIABLES (FIXED)
+
+HUGGINGFACE_API_TOKEN = os.getenv("HUGGINGFACE_API_TOKEN")
+
+# 🔥 TEMP DEBUG (remove later)
+print("HF TOKEN:", HUGGINGFACE_API_TOKEN)
 
 
 # APPLICATIONS
+
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -35,10 +50,11 @@ AUTH_USER_MODEL = 'accounts.User'
 
 
 # MIDDLEWARE
+
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
 
-    # static files
+    # Static files
     'whitenoise.middleware.WhiteNoiseMiddleware',
 
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -51,10 +67,12 @@ MIDDLEWARE = [
 
 
 # URLS
+
 ROOT_URLCONF = 'elitelance.urls'
 
 
 # TEMPLATES
+
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
@@ -73,10 +91,12 @@ TEMPLATES = [
 
 
 # WSGI
+
 WSGI_APPLICATION = 'elitelance.wsgi.application'
 
 
-# DATABASE (SQLite - perfect for PythonAnywhere)
+# DATABASE
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
@@ -86,6 +106,7 @@ DATABASES = {
 
 
 # PASSWORD VALIDATION
+
 AUTH_PASSWORD_VALIDATORS = [
     {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator'},
     {'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator'},
@@ -95,6 +116,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 
 # INTERNATIONALIZATION
+
 LANGUAGE_CODE = 'en-us'
 TIME_ZONE = 'UTC'
 
@@ -103,6 +125,7 @@ USE_TZ = True
 
 
 # STATIC FILES
+
 STATIC_URL = '/static/'
 
 STATICFILES_DIRS = [
@@ -114,10 +137,12 @@ STATIC_ROOT = BASE_DIR / 'staticfiles'
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 
-# MEDIA FILES
+# MEDIA FILES (KEEP UPLOADS )
+
 MEDIA_URL = '/media/'
-MEDIA_ROOT = BASE_DIR / 'media'
+MEDIA_ROOT = BASE_DIR / 'uploads'
 
 
 # DEFAULT PK
+
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
