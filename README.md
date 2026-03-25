@@ -1,144 +1,133 @@
-EliteLance – Freelancing Marketplace
-EliteLance is a modern freelancing platform where clients can post jobs and freelancers can apply, collaborate, and complete projects efficiently.
-Built with Django, this project demonstrates a full-stack web application with role-based access, dashboards, notifications, and REST APIs.
+Elitelance 🚀
+Elitelance is a full-featured freelancing marketplace web application built with Django. It connects clients and freelancers, allowing job posting, bidding, profile management, and AI-assisted content generation.
+
+🔹 Features
+
+User authentication with role-based access (Client, Freelancer, Manager)
+Client dashboard for posting and managing jobs
+Freelancer dashboard for browsing jobs and submitting proposals
+Public profile system for freelancers
+AI-powered job description and proposal generation
+Notification system
+Profile management with image upload
 
 
-
-🚀 Features
-🔐 Authentication & Roles
-
-User registration & login system
-Role-based access:
-
-👤 Client
-🧑‍💻 Freelancer
-🧑‍💼 Manager
-
-
-
-
-💼 Job Management
-Clients can:
-
-Post jobs
-View proposals
-Manage job listings
-
-Freelancers can:
-
-Browse jobs
-Apply with proposals
-
-
-📊 Dashboards
-
-
- Client Dashboard
-
-Total jobs overview
-Proposal tracking
-Recent job activity
-
- Freelancer Dashboard
-
-Total proposals
-Accepted proposals
-Active contracts
-Completed work
-
- Manager Dashboard
-
-Platform analytics
-User, job, and contract insights
-
-
-🔔 Notification System
-
-Real-time styled UI notifications
-Notification bell icon
-Dynamic updates
-Clean toast alerts
-
-
-🎨 UI/UX
-
-Modern glassmorphism design
-Aurora gradient background
-Smooth animations & transitions
-Fully responsive layout
-
-
-⚙️ Admin Panel
-
-Custom user model with roles
-Client & Freelancer profile management
-Profile image preview in admin
-
-
-🔌 API (Django REST Framework)
-
-Job listing API
-Token-based authentication
-Serializer-based architecture
-
-
-🛠️ Tech Stack
+🔹 Tech Stack
 
 Backend: Django, Django REST Framework
-Frontend: HTML, Tailwind CSS
-Database: SQLite (development)
-Version Control: Git & GitHub
+Frontend: HTML, CSS, JavaScript
+Database: SQLite
+Deployment: PythonAnywhere
+AI Integration: Hugging Face API
 
 
-📁 Project Structure
+🔹 Project Structure
 elitelance/
 │
-├── accounts/        # User & profile management
-├── jobs/            # Job & proposal logic
-├── dashboard/       # Role-based dashboards
-├── api/             # REST APIs
-├── templates/       # HTML templates
-├── static/          # Static files
+├── accounts/
+├── jobs/
+├── dashboard/
+├── core/
+├── api/
+├── templates/
+├── static/
+├── uploads/
 ├── manage.py
-└── requirements.txt
 
 
-⚙️ Setup Instructions
-# Clone repository
-git clone https://github.com/jhon9223/Elitelance
+🔹 Installation (Local Setup)
+
+Clone the repository:
+
+git clone https://github.com/jhon9223/Elitelance.git
 cd Elitelance
 
-# Create virtual environment
+
+Create virtual environment:
+
 python -m venv env
+env\Scripts\activate   (Windows)
 
-# Activate environment (Windows)
-env\Scripts\activate
 
-# Install dependencies
+Install dependencies:
+
 pip install -r requirements.txt
 
-# Run migrations
+
+Apply migrations:
+
 python manage.py migrate
 
-# Start server
+
+Run server:
+
 python manage.py runserver
 
 
-🚀 Future Improvements
+🔹 Environment Variables
+Add your Hugging Face API token in settings.py:
+HUGGINGFACE_API_TOKEN = "your_token_here"
 
-Payment integration (Stripe/Razorpay)
-Real-time chat system
+
+🔹 Demo Accounts
+You can use the following accounts to test different roles:
+
+Freelancer
+
+Username: ebin
+Password: blackandwhite123
+
+Client
+
+Username: nextgen_softwares
+Password: blackandwhite123
+
+Manager
+
+Username: _liam
+Password: blackandwhite123
+
+Admin
+
+Username: johnn
+Password: john123
+
+
+🔹 Key Functionalities
+
+Role-based redirection after login
+Profile completeness tracking
+Image upload and media handling
+AI content generation for:
+
+Job descriptions
+Freelancer proposals
+
+
+
+
+🔹 Deployment
+The project is deployed on PythonAnywhere.
+Steps:
+
+Upload project or clone from GitHub
+Install requirements
+Run migrations
+Configure static and media files
+Add API token
+Reload web app
+
+
+🔹 Future Improvements
+
+Payment integration
+Chat system between client and freelancer
+Advanced AI suggestions
 Email notifications
-Job recommendations
-Advanced analytics dashboard
 
 
-
-
-📧 Contact
-
+🔹 Author
+John Nj
 GitHub: https://github.com/jhon9223
 LinkedIn: https://www.linkedin.com/in/dev-johnnj
-
-
-
+project live/deployment link: https://john2293.pythonanywhere.com/
