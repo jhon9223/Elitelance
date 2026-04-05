@@ -25,3 +25,5 @@ def proposal_list_api(request):
     serializer = ProposalSerializer(proposals, many=True)
 
     return Response(serializer.data)
+# http://127.0.0.1:8000/api/proposals/
+# http://127.0.0.1:8000/api/jobs/
