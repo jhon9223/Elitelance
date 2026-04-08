@@ -527,7 +527,7 @@ def job_delete(request, pk):
 
     job = get_object_or_404(Job, pk=pk)
 
-    # 🔐 Only owner can delete
+    #  Only owner can delete
     if job.created_by != request.user:
         raise PermissionDenied("You are not allowed to delete this job.")
 
